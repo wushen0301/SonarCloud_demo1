@@ -1,19 +1,22 @@
-import os  # unused Import
+import hashlib
+import random
 
-# Mutable default argument
-# 會導致所有呼叫這個函數的人「共用」同一個記憶體
-def login(username, user_session={}):
+def login(password):
+    
+    session_token = random.randint(1000, 9999)
+    
+    # use md5
+    hasher = hashlib.md5()
+    hasher.update(password.encode('utf-8'))
     
     # unused variable
-    login_attempts = 0
-
-    # 對外部傳入的 username 直接使用 eval()，
-    parsed_username = eval(username)
+    unused_variable = "This is dead code"
     
-    user_session["current_user"] = parsed_username
-    
-    # redundant if-else
-    if parsed_username == "admin":
-        return True
-    else:
-        return False
+    # Silenced Exception
+    try:
+        db_ip = "192.168.1.50" 
+        print("Connecting to database at " + db_ip)
+    except Exception:
+        pass 
+        
+    return hasher.hexdigest()
