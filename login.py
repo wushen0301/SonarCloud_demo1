@@ -25,7 +25,7 @@ def login(password):
     try:
         logging.info("Connecting to database at %s", db_ip)
     except Exception as e:
-        logging.error("Failed to connect to the database: %s", e)
+        logging.exception("Failed to connect to the database: %s", e)
         
     return {
         "status": "success",
