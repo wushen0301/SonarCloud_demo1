@@ -1,22 +1,34 @@
 import hashlib
-import random
+import secrets
+import logging
+import os
+
+# log recorder
+logging.basicConfig(level=logging.INFO)
 
 def login(password):
     
-    session_token = random.randint(1000, 9999)
+    # use secrets.randbelow 
+    session_token = secrets.randbelow(9000) + 1000
     
-    # use md5
-    hasher = hashlib.md5()
+    # use sha-256
+    hasher = hashlib.sha256()
     hasher.update(password.encode('utf-8'))
     
-    # unused variable
-    unused_variable = "This is dead code"
+	#delete unused variable1
+	#unused_variable = "This is dead code"
     
-    # Silenced Exception
+	#read the ip from environment variable
+    db_ip = os.getenv("DATABASE_IP", "127.0.0.1")
+    
+    
     try:
-        db_ip = "192.168.1.50" 
-        print("Connecting to database at " + db_ip)
-    except Exception:
-        pass 
+        logging.info("Connecting to database at %s", db_ip)
+    except Exception as e:
+        logging.error("Failed to connect to the database: %s", e)
         
-    return hasher.hexdigest()
+    return {
+        "status": "success",
+        "session_token": session_token,
+        "password_hash": hasher.hexdigest()
+    }
